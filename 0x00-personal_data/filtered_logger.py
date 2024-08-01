@@ -14,4 +14,3 @@ def filter_datum(
     pattern = '|'.join([f'{field}=.*?{separator}' for field in fields])
     return re.sub(pattern, lambda x: x.group().split('=')[0] + '=' +
                   redaction + separator, message)
-
