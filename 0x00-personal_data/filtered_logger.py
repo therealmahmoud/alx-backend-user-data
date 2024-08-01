@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """ Task 0."""
-import re
 import os
-from typing import List
+import re
 import logging
 import mysql.connector
+from typing import List
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
