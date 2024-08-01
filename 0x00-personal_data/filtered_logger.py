@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """ Task 0."""
 import re
+import os
 from typing import List
 import logging
+import mysql.connector
+
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
@@ -48,3 +51,18 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
     logger.addHandler(handler)
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """Connect to a secure holberton database to read a users table."""
+    DB_USER = os.getenv('PERSONAL_DATA_DB_USERNAME', "root"),
+    DB_PASS = os.getenv('PERSONAL_DATA_DB_PASSWORD', ""),
+    DB_HOST = os.getenv('PERSONAL_DATA_DB_HOST', "localhost"),
+    DB_NAME = os.getenv('PERSONAL_DATA_DB_NAME', "holberton")
+    connection = mysql.connector.connect(
+        user=DB_USER,
+        password=DB_PASS,
+        host=DB_HOST,
+        db=DB_NAME
+    )
+    return connection
