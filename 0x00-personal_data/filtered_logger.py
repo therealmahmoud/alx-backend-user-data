@@ -55,14 +55,14 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """Connect to a secure holberton database to read a users table."""
-    DB_USER = os.getenv('PERSONAL_DATA_DB_USERNAME', "root"),
-    DB_PASS = os.getenv('PERSONAL_DATA_DB_PASSWORD', ""),
-    DB_HOST = os.getenv('PERSONAL_DATA_DB_HOST', "localhost"),
-    DB_NAME = os.getenv('PERSONAL_DATA_DB_NAME', "holberton")
+    db_user = os.getenv('PERSONAL_DATA_DB_USERNAME', "root"),
+    db_pass = os.getenv('PERSONAL_DATA_DB_PASSWORD', ""),
+    db_host = os.getenv('PERSONAL_DATA_DB_HOST', "localhost"),
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME', "holberton")
     connection = mysql.connector.connect(
-        host=DB_HOST,
-        user=DB_USER,
-        password=DB_PASS,
-        database=DB_NAME,
+        host=db_host,
+        user=db_user,
+        password=db_user,
+        db=db_name,
     )
     return connection
