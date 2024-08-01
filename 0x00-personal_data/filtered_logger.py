@@ -43,4 +43,4 @@ def get_logger() -> logging.Logger:
     """ Returns a logging.Logger object. """
     logger = logging.getLogger('user_data')
     level = logger.setLevel(logging.INFO)
-    return level.addHandler(RedactingFormatter)
+    return level.addHandler(RedactingFormatter(PII_FIELDS))
