@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 from api.v1.views import app_views
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from models.user import User
 import os
 from typing import Tuple
 
 
-@app_views.route('/auth_session/login', methods=['post'], strict_slashes=False)
+@app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def retrieve_email_pwd() -> Tuple[str, int]:
     """ Retrieve email and password of user"""
     not_found_res = {"error": "no user found for this email"}
@@ -29,3 +29,13 @@ def retrieve_email_pwd() -> Tuple[str, int]:
         res.set_cookie(os.getenv("SESSION_NAME"), sessiond_id)
         return res
     return jsonify({"error": "wrong password"}), 401
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+def delete():
+    """ Delete json object."""
+    from api.v1.app import auth
+    is_destroyed = auth.destroy_session(request)
+    if not is_destroyed:
+        abort(404)
+    return jsonify({})
