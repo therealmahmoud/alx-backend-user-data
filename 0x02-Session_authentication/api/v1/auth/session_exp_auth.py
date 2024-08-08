@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """Session authentication with expiration module for the API.
 """
