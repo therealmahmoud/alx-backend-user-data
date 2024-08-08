@@ -3,24 +3,29 @@ from api.v1.views import app_views
 from flask import request, jsonify
 from models.user import User
 import os
+from typing import Tuple
 
 
 @app_views.route('/auth_session/login', methods=['post'], strict_slashes=False)
-def retrieve_email_pwd() -> str:
+def retrieve_email_pwd() -> Tuple[str, int]:
     """ Retrieve email and password of user"""
+    not_found_res = {"error": "no user found for this email"}
     email = request.form.get('email')
-    if not email:
+    if email is None or len(email.strip()) == 0:
         return jsonify({"error": "email missing"}), 400
-    pwd = request.form.get('pwd')
-    if not pwd:
+    password = request.form.get('password')
+    if password is None or len(password.strip()) == 0:
         return jsonify({"error": "password missing"}), 400
-    user = User.search({'email': email})
-    if len(user) <= 0:
-        return jsonify({"error": "no user found for this email"}), 404
-    if user[0].is_valid_password(pwd):
+    try:
+        users = User.search({'email': email})
+    except Exception:
+        return jsonify(not_found_res), 404
+    if len(users) <= 0:
+        return jsonify(not_found_res), 404
+    if users[0].is_valid_password(password):
         from api.v1.app import auth
-        sessiond_id = auth.create_session(getattr(user[0], 'id'))
-        res = jsonify(user[0].to_json())
+        sessiond_id = auth.create_session(getattr(users[0], 'id'))
+        res = jsonify(users[0].to_json())
         res.set_cookie(os.getenv("SESSION_NAME"), sessiond_id)
         return res
     return jsonify({"error": "wrong password"}), 401
