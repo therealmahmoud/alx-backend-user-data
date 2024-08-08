@@ -23,6 +23,7 @@ class SessionAuth(Auth):
             return self.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None):
+        """Retrieves the user associated with the request."""
         self.session_cookie(request)
         self.user_id_for_session_id(self.user_id_by_session_id)
         return User.get(User.load_from_file())
