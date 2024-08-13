@@ -34,14 +34,11 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         """ Adding user to DB."""
-        try:
-            new_user = User(email=email, hashed_password=hashed_password)
-            self._session.add(new_user)
+        if email and hashed_password:
+            new = User(email=email, hashed_password=hashed_password)
+            self._session.add(new)
             self._session.commit()
-        except Exception:
-            self._session.rollback()
-            new_user = None
-        return new_user
+        return new
 
     def find_user_by(self, **kwargs) -> User:
         """Find the first user matching the given keyword arguments"""
