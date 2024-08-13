@@ -32,6 +32,7 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         if not email or not hashed_password:
+            self._session.rollback()
             user = None
         elif email and hashed_password:
             user = User(email=email, hashed_password=hashed_password)
