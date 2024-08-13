@@ -2,11 +2,11 @@
 """DB module
 """
 from sqlalchemy import create_engine
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.session import Session
 
 from user import Base, User
 
@@ -34,11 +34,14 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         """ Adding user to DB."""
-        if email and hashed_password:
-            new = User(email=email, hashed_password=hashed_password)
-            self._session.add(new)
+        try:
+            new_user = User(email=email, hashed_password=hashed_password)
+            self._session.add(new_user)
             self._session.commit()
-        return new
+        except Exception:
+            self._session.rollback()
+            new_user = None
+        return new_user
 
     def find_user_by(self, **kwargs) -> User:
         """Find the first user matching the given keyword arguments"""
