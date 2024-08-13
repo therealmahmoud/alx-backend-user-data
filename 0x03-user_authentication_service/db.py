@@ -31,11 +31,11 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        try:
-            user = User(email=email, hashed_password=hashed_password)
-            self._session.add(user)
+        """ Adding user to DB."""
+        if not email or not hashed_password:
+            new = None
+        elif email and hashed_password:
+            new = User(email=email, hashed_password=hashed_password)
+            self._session.add(new)
             self._session.commit()
-        except Exception:
-            self._session.rollback()
-            user = None
-        return user
+        return new
