@@ -32,9 +32,7 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         """ Adding user to DB."""
-        if not email or not hashed_password:
-            new = None
-        elif email and hashed_password:
+        if email and hashed_password:
             new = User(email=email, hashed_password=hashed_password)
             self._session.add(new)
             self._session.commit()
