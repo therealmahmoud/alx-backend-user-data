@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module.
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, tuple_
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -33,7 +33,8 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """ Adding user to DB."""
+        """Adds a new user to the database.
+        """
         try:
             new_user = User(email=email, hashed_password=hashed_password)
             self._session.add(new_user)
