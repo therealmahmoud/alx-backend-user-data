@@ -42,10 +42,5 @@ class DB:
 
     def find_user_by(self, **kwargs):
         """Find the first user matching the given keyword arguments"""
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
-            return user
-        except NoResultFound:
-            raise NoResultFound("Not found")
-        except InvalidRequestError:
-            raise InvalidRequestError("Invalid")
+        user = self._session.query(User).filter_by(**kwargs).one()
+        return user
