@@ -2,10 +2,10 @@
 """ The authentcation module."""
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
-from uuid import uuid4
 
 from db import DB
 from user import User
+from uuid import uuid4
 
 
 def _hash_password(password: str) -> bytes:
