@@ -2,6 +2,7 @@
 """ The authentcation module."""
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
+from uuid import uuid4
 
 from db import DB
 from user import User
@@ -11,6 +12,8 @@ def _hash_password(password: str) -> bytes:
     """ Hashing and encrypting the password"""
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
+def _uuid():
+    return str(uuid4)
 
 class Auth:
     """Auth class to interact with the authentication database.
