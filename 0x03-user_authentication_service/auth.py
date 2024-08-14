@@ -12,8 +12,10 @@ def _hash_password(password: str) -> bytes:
     """ Hashing and encrypting the password"""
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
+
 def _uuid():
     return str(uuid4)
+
 
 class Auth:
     """Auth class to interact with the authentication database.
