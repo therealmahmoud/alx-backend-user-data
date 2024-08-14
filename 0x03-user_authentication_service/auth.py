@@ -21,9 +21,10 @@ class Auth:
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """ Register a new user."""
+        """Adds a new user to the database.
+        """
         try:
             self._db.find_user_by(email=email)
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
-        raise ValueError(f'User {email} already exists')
+        raise ValueError("User {} already exists".format(email))
