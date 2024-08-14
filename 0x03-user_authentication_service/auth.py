@@ -19,7 +19,7 @@ class Auth:
 
     def register_user(self, email: str, password: str) -> User:
         """ Register a new user."""
-        if email:
+        if email in self._db.__session:
             raise ValueError(f'User {email} already exists')
         _hash_password(password)
         user = self._db.add_user(email, password)
