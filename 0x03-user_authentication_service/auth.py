@@ -2,13 +2,12 @@
 """ The authentcation module."""
 import bcrypt
 from db import DB
+from user import User
 
 
 def _hash_password(password: str) -> bytes:
     """ Hashing and encrypting the password"""
-    encoded = password.encode('utf8')
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(encoded, salt)
+    return bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
 
 class Auth:
@@ -18,5 +17,9 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user():
-        pass
+    def register_user(self, email: str, password: str) -> User:
+        if User.email == email:
+            raise ValueError(f'User {email} already exists')
+        _hash_password(password)
+        user = self._db.add_user(email, password)
+        return user
