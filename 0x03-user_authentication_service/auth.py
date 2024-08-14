@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""A module for authentication-related routines.
-"""
+""" The authentcation module."""
 import bcrypt
-from uuid import uuid4
-from typing import Union
 from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
