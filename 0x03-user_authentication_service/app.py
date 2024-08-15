@@ -63,11 +63,11 @@ def get_reset_password_token() -> str:
     """  Get reset password token."""
     email = request.form.get("email")
     token = None
-    if AUTH._db.find_user_by(email=email):
+    try:
         token = AUTH.get_reset_password_token(email)
-        return jsonify({"email": email, "reset_token": token})
-    else:
+    except ValueError:
         abort(403)
+    return jsonify({"email": email, "reset_token": token})
 
 
 if __name__ == "__main__":
