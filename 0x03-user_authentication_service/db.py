@@ -52,7 +52,7 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Updating the user ."""
-        user = (id=user_id)
+        user = self.find_user_by(id=user_id)
         if user is None:
             return
         update_source = {}
