@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """ Flask application."""
 from flask import Flask, jsonify, abort, request
+
 from auth import Auth
 
 
-AUTH = Auth()
 app = Flask(__name__)
+AUTH = Auth()
 
 
 @app.route("/", methods=['GET'], strict_slashes=False)
@@ -32,9 +33,9 @@ def login() -> str:
     if not AUTH.valid_login(email, password):
         abort(401)
     session_id = AUTH.create_session(email)
-    resp = jsonify({"email": email, "message": "logged in"})
-    resp.set_cookie("session_id", session_id)
-    return resp
+    response = jsonify({"email": email, "message": "logged in"})
+    response.set_cookie("session_id", session_id)
+    return response
 
 
 if __name__ == "__main__":
