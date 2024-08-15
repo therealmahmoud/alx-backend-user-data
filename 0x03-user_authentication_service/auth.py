@@ -37,15 +37,17 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """Credentials validation."""
+        user = None
         try:
-            self._db.find_user_by(email=email)
+            user = self._db.find_user_by(email=email)
+            if user is not None:
+                return bcrypt.checkpw(
+                    password.encode("utf-8"),
+                    user.hashed_password,
+                )
         except NoResultFound:
             return False
-        if bcrypt.checkpw(password.encode("utf-8"),
-                          _hash_password(password)) is True:
-            return True
-        else:
-            return False
+        return False
 
     def create_session(self, email: str) -> str:
         try:
