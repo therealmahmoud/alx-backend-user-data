@@ -28,7 +28,7 @@ def users() -> str:
 @app.route("/sessions", methods=['POST'], strict_slashes=False)
 def login() -> str:
     """ User login."""
-    email, password = request.form.get('email'), request.form.get('password')
+    email, password = request.form.get("email"), request.form.get("password")
     if not AUTH.valid_login(email, password):
         abort(401)
     session_id = AUTH.create_session(email)
