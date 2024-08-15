@@ -81,6 +81,6 @@ class Auth:
         user = self._db.find_user_by(email=email)
         if not user:
             raise ValueError()
-        user.id = _generate_uuid()
-        self._db.update_user(user.id, reset_token=user.id)
-        return user.id
+        user_id = _generate_uuid()
+        self._db.update_user(user.id, reset_token=user_id)
+        return user_id
