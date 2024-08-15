@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, tuple_
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -42,27 +42,27 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """Find the first user matching the given keyword arguments"""
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
-            return user
-        except NoResultFound:
+        fields, values = [], []
+        for key, value in kwargs.items():
+            if hasattr(User, key):
+                fields.append(getattr(User, key))
+                values.append(value)
+            else:
+                raise InvalidRequestError()
+        result = self._session.query(User).filter(
+            tuple_(*fields).in_([tuple(values)])
+        ).first()
+        if result is None:
             raise NoResultFound()
-        except InvalidRequestError:
-            raise InvalidRequestError()
+        return result
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Updating the user ."""
         user = self.find_user_by(id=user_id)
-        if user is None:
-            return
-        update_source = {}
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                update_source[getattr(User, key)] = value
-            else:
+        if not user:
+            return None
+        for key, val in kwargs.items():
+            if not hasattr(user, key):
                 raise ValueError()
-        self._session.query(User).filter(User.id == user_id).update(
-            update_source,
-            synchronize_session=False,
-        )
+            setattr(user, key, val)
         self._session.commit()
