@@ -25,9 +25,9 @@ def users() -> str:
         return jsonify({"message": "email already registered"}), 400
 
 
-@app.route("/session", methods=['POST'], strict_slashes=False)
+@app.route("/sessions", methods=['POST'], strict_slashes=False)
 def login() -> str:
-    """ Account login."""
+    """ User login."""
     email, password = request.form.get('email'), request.form.get('password')
     if not AUTH.valid_login(email, password):
         abort(401)
