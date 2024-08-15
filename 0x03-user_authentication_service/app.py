@@ -41,10 +41,10 @@ def login() -> str:
 def logout() -> None:
     """ User logout."""
     session_id = request.cookies.get("session_id")
-    req = AUTH.get_user_from_session_id(session_id)
-    if not req:
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
         abort(403)
-    AUTH.destroy_session(session_id)
+    AUTH.destroy_session(user.id)
     return redirect("/")
 
 
